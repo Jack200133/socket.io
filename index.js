@@ -9,7 +9,7 @@ const server=http.createServer(app);
 
 const io =new Server(server,{
   cors:{
-    origin: "http://localhost:3000",
+    origin: "*",
     methods: ["GET", "POST"],
   },
 });
@@ -32,9 +32,14 @@ io.on('connection', (socket) => {
         console.log(`EL ROOM: ${id} entro: ${socket.id}`)
         socket.join(id)
     })
+
+    socket.on("END",(id_room)=>{
+      console.log(`El ROOM: ${id_room} se cerro`)
+      socket.to(id_room).emit("termina_session")
+    })
 });
 
 
 server.listen(5000, () =>{
-  console. log("SERVER IS RUNNING");
+  console.log("SERVER IS RUNNING");
 });
